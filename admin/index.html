@@ -62,6 +62,11 @@
         $(this).next('.level02').slideToggle();
       })
 
+      // 优化：点击谁高亮，背景色
+      $('.level01').click(function() {
+        $(this).addClass('active').siblings().removeClass('active');
+      })
+
     })
   </script>
 </body>
