@@ -42,8 +42,8 @@
     $('.input_sub').click(function(e) {
       e.preventDefault(); // 阻止默认行为
 
-      var username = $('.input_txt').val();
-      var password = $('.input_pass').val();
+      var username = $('.input_txt').val().trim();
+      var password = $('.input_pass').val().trim();
 
       // 是否为空
       if (username == '' || password == '') {
@@ -68,6 +68,8 @@
           }
           // 正确
           else if (res.code == 200) {
+            // 保存token到本地，方便后续使用
+            localStorage.setItem('token', res.token);
             location.href = 'index.html';
           }
 
