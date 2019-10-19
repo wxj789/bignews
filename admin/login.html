@@ -38,6 +38,44 @@
     </div>
   </div>
 
+  <script>
+    $('.input_sub').click(function(e) {
+      e.preventDefault(); // 阻止默认行为
+
+      var username = $('.input_txt').val();
+      var password = $('.input_pass').val();
+
+      // 是否为空
+      if (username == '' || password == '') {
+        alert('用户名和密码不能为空！');
+        return;
+      }
+
+      // 不为空
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:8080/api/v1/admin/user/login',
+        data: {
+          username: username,
+          password: password
+        },
+        success: function(res) {
+          // console.log(res);
+          // 判断用户名和密码是否正确
+          if (res.code == 400) {
+            // 错误
+            alert(res.msg);
+          }
+          // 正确
+          else if (res.code == 200) {
+            location.href = 'index.html';
+          }
+
+        }
+      })
+    })
+  </script>
+
 </body>
 
 </html>
