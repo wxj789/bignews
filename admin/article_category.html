@@ -89,7 +89,7 @@
     <td>{{$value.slug}}</td>
     <td class="text-center">
       <a href="javascript:void(0);" data-toggle="modal" class=" btn btn-info btn-xs">编辑</a>
-      <a href="javascript:void(0);" class="btn btn-danger btn-xs">删除</a>
+      <a href="javascript:void(0);" class="btn btn-danger btn-xs" data-id="{{$value.id}}">删除</a>
     </td>
   </tr>
   {{/each}}
@@ -152,6 +152,26 @@
     })
 
 
+    // 删除文章类别
+    // 事件委托
+    $('tbody').on('click', '.btn-danger', function() {
+      var id = $(this).attr('data-id');
+
+      //   调用删除文章类别 接口
+      $.ajax({
+        url: BigNew.category_delete,
+        type: 'POST',
+        data: {
+          id: id
+        },
+        success: function(res) {
+          console.log(res);
+          // 重新渲染文章类别数据
+          tateload();
+
+        }
+      })
+    })
 
 
 
