@@ -98,6 +98,12 @@
         // }
       })
 
+
+      // 给 退出 按钮注册点击事件
+      $('.logout').click(function() {
+        localStorage.removeItem('token');
+        location.href = './index.html';
+      })
     })
   </script>
 </body>
