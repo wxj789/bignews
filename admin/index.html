@@ -72,11 +72,17 @@
 
       // 获取用户信息
       $.ajax({
-        url: 'http://localhost:8080/api/v1/admin/user/info',
+        url: BigNew.user_info,
         // 必须要有请求头
+
         headers: {
           Authorization: window.localStorage.getItem('token')
         },
+
+        // headers: {
+        //   Authorization: window.localStorage.getItem('token')
+        // },
+
         success: function(res) {
           //   console.log(res);
           $('.user_info > img').attr('src', res.data.userPic);
@@ -86,6 +92,7 @@
         },
 
         // 请求失败时
+
         error: function(res) {
           //   console.log('回复函');
           //   console.log(res);
@@ -95,9 +102,25 @@
           }
 
 
+          // error: function(res) {
+          //   //   console.log('回复函');
+          //   //   console.log(res);
+          //   if (res.statusText == 'Forbidden') {
+          //     alert('请先登录！');
+          //     location.href = './login.html';
+          //   }
+
+
+
         }
       })
 
+
+      // 给 退出 按钮注册点击事件
+      $('.logout').click(function() {
+        localStorage.removeItem('token');
+        location.href = './index.html';
+      })
     })
   </script>
 </body>
