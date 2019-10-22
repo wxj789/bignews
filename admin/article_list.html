@@ -105,28 +105,45 @@
 </body>
 
 <script>
-  // 所有分类
-  $.ajax({
-    url: BigNew.category_list,
-    success: function(res) {
-      console.log(res);
-      var str = template('list', res);
-      $('#selCategory').html(str);
-    }
-  })
+  $(function() {
+    // 所有分类
+    $.ajax({
+      url: BigNew.category_list,
+      success: function(res) {
+        console.log(res);
+        var str = template('list', res);
+        $('#selCategory').html(str);
+      }
+    })
 
 
-  $.ajax({
-    url: BigNew.article_query,
-    data: {
-      perpage: 10
-    },
-    success: function(res) {
-      console.log(res);
-      var str = template('article', res);
-      $('tbody').html(str);
+    $.ajax({
+        url: BigNew.article_query,
+        data: {
+          perpage: 10
+        },
+        success: function(res) {
+          console.log(res);
+          var str = template('article', res);
+          $('tbody').html(str);
 
-    }
+        }
+
+      })
+      // 分页
+    $('#pagination').twbsPagination({
+      totalPages: 35,
+      visiblePages: 7,
+      first: '首页',
+      last: '尾页',
+      prev: '上一页',
+      next: '下一页',
+      onPageClick: function(event, page) {
+        //   $('#page-content').text('Page ' + page);
+        console.log(event, page);
+
+      }
+    })
 
 
   })
