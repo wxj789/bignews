@@ -116,34 +116,51 @@
       }
     })
 
-
+    // 所有文章列表数据
     $.ajax({
-        url: BigNew.article_query,
-        data: {
-          perpage: 10
-        },
-        success: function(res) {
-          console.log(res);
-          var str = template('article', res);
-          $('tbody').html(str);
+      url: BigNew.article_query,
+      data: {
+        perpage: 10
+      },
+      success: function(res) {
+        console.log(res);
+        var str = template('article', res);
+        $('tbody').html(str);
 
-        }
-
-      })
-      // 分页
-    $('#pagination').twbsPagination({
-      totalPages: 35,
-      visiblePages: 7,
-      first: '首页',
-      last: '尾页',
-      prev: '上一页',
-      next: '下一页',
-      onPageClick: function(event, page) {
-        //   $('#page-content').text('Page ' + page);
-        console.log(event, page);
+        // 服务器返回数据之后才知道有多少页， 创建分页的插件要写在返回数据之后
+        // 调用分页插件的方法
+        // 分页
+        $('#pagination').twbsPagination({
+          totalPages: res.data.totalPage,
+          visiblePages: 7,
+          first: '首页',
+          last: '尾页',
+          prev: '上一页',
+          next: '下一页',
+          onPageClick: function(event, page) {
+            // 当前点击页的页码
+            console.log(page);
+            // 获取当前页对应的文章数据
+            $.ajax({
+              url: BigNew.article_query,
+              data: {
+                page: page,
+                perpage: 10,
+              },
+              success: function(res) {
+                console.log(res);
+                // 模板引擎 渲染到页面上
+                var str = template('article', res);
+                $('tbody').html(str);
+              }
+            })
+          }
+        })
 
       }
+
     })
+
 
 
   })
