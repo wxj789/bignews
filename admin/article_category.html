@@ -90,6 +90,8 @@
         </div>
         <div class="modal-body">
           <form>
+            <!-- 隐藏域  用来存放id -->
+            <input type="hidden" class="edit-id">
             <div class="form-group">
               <label for="exampleInputEmail1">分类名称</label>
               <input type="text" class="form-control edit_name">
@@ -102,7 +104,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="button" class="btn btn-primary">确定</button>
+          <button type="button" class="btn btn-success">修改</button>
         </div>
       </div>
     </div>
@@ -214,6 +216,7 @@
         },
         success: function(res) {
           console.log(res);
+          $('.edit-id').val(res.data[0].id);
           $('.edit_name').val(res.data[0].name);
           $('.edit_slug').val(res.data[0].slug);
           $("#editModal").modal('show');
@@ -221,6 +224,34 @@
         }
       })
     })
+
+    // 编辑文章类别
+    $('#editModal .btn-success').click(function() {
+      var id = $('.edit-id').val();
+      var name = $('.edit_name').val();
+      var slug = $('.edit_slug').val();
+      $.ajax({
+        url: BigNew.category_edit,
+        type: 'POST',
+        // contentType: false,
+        // processData: false,
+        data: {
+          id: id,
+          name: name,
+          slug: slug
+        },
+        success: function(res) {
+          console.log(res);
+          if (res.code == 200) {
+            $("#editModal").modal('hide');
+
+            tateload();
+          }
+
+        }
+      })
+    })
+
 
 
   })
