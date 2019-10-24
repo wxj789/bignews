@@ -34,7 +34,7 @@
                             <option>爱旅行</option>
                         </select>
             <select id="selStatus" name="" class="form-control input-sm">
-                            <option value="">所有状态</option>
+                            <option value=''>所有状态</option>
                             <option value="草稿">草稿</option>
                             <option value="已发布">已发布</option>
                         </select>
@@ -71,6 +71,8 @@
         </tbody>
       </table>
       <div class="row text-center">
+
+        <!-- 页码 -->
         <ul id="pagination" class="pagination-sm"></ul>
       </div>
     </div>
@@ -95,7 +97,7 @@
 
   <!-- 模板引擎   所有分类-->
   <script type="text/html" id='list'>
-    <option>所有分类</option>
+    <option value=''>所有分类</option>
 
     {{each data}}
     <option value='{{$value.id}}'>{{$value.name}}</option>
@@ -140,15 +142,22 @@
           onPageClick: function(event, page) {
             // 当前点击页的页码
             console.log(page);
+
+            // 所选分类的id
+            var selCategory = $('#selCategory').val();
+            // 所选状态的id
+            var selStatus = $('#selStatus').val();
             // 获取当前页对应的文章数据
             $.ajax({
               url: BigNew.article_query,
               data: {
                 page: page,
                 perpage: 10,
+                type: selCategory,
+                state: selStatus
               },
               success: function(res) {
-                console.log(res);
+                // console.log(res);
                 // 模板引擎 渲染到页面上
                 var str = template('article', res);
                 $('tbody').html(str);
@@ -161,6 +170,41 @@
 
     })
 
+    // 给 筛选 按钮注册点击事件
+    $('#btnSearch').click(function(e) {
+      e.preventDefault();
+
+      // 所选分类的id
+      var selCategory = $('#selCategory').val();
+      // 所选状态的id
+      var selStatus = $('#selStatus').val();
+
+      $.ajax({
+        url: BigNew.article_query,
+        data: {
+          // 文章类型的id
+          type: selCategory,
+          // 文章类型的id
+          state: selStatus,
+          // 每页显示的条数
+          perpage: 10
+        },
+        success: function(res) {
+          console.log(res);
+
+          // 通过模板引擎将筛选后的数据渲染到页面上
+          var str = template('article', res);
+          $('tbody').html(str);
+
+          // 重新设置总页数
+          // 调用分页插件内部的方法
+          // changeTotalPages
+          // 参数1  新的总页数  res.data.totalPage
+          // 参数2 当前页
+          $('#pagination').twbsPagination('changeTotalPages', res.data.totalPage, 1);
+        }
+      })
+    })
 
 
   })
